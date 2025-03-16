@@ -64,6 +64,7 @@ model_CNN3 = CNN_3()
 model_CNN4 = CNN_4()
 model_CNN5 = CNN_5()
 
+print("Tranining of MLP1 is starting")
 result_MLP1 = train_and_evaluate('mpl_1',
                                  model_MLP1, 
                                  train_loader, 
@@ -80,6 +81,7 @@ with open('./part3/results/result_MLP1.json', 'w') as f:
     json.dump(result_serializable_MLP1, f, indent=4)
 
 
+print("Tranining of MLP2 is starting")
 result_MLP2 = train_and_evaluate('mlp_2',
                                  model_MLP2, 
                                  train_loader, 
@@ -95,6 +97,8 @@ result_serializable_MLP2 = convert_to_serializable(result_MLP2)
 with open('./part3/results/result_MLP2.json', 'w') as f:
     json.dump(result_serializable_MLP2, f, indent=4)
 
+
+print("Tranining of CNN3 is starting")
 result_CNN3 = CNN_train_and_evaluate('cnn_3',
                                      model_CNN3, 
                                      train_loader, 
@@ -112,6 +116,7 @@ with open('./part3/results/result_CNN3.json', 'w') as f:
     json.dump(result_serializable_CNN3, f, indent=4)
 
 
+print("Tranining of CNN4 is starting")
 result_CNN4 = CNN_train_and_evaluate('cnn_4',
                                      model_CNN4, 
                                      train_loader, 
@@ -129,6 +134,7 @@ with open('./part3/results/result_CNN4.json', 'w') as f:
     json.dump(result_serializable_CNN4, f, indent=4)
 
 
+print("Tranining of CNN5 is starting")
 result_CNN5 = CNN_train_and_evaluate('cnn_5',
                                      model_CNN5, 
                                      train_loader, 

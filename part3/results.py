@@ -19,3 +19,7 @@ with open('part3/results/result_CNN5.json', 'r') as file:
     results_CNN5 = json.load(file)
 
 part3Plots([results_MLP1])
+part3Plots([results_MLP2])
+part3Plots([results_CNN3])
+part3Plots([results_CNN4])
+part3Plots([results_CNN5])
