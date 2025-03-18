@@ -3,6 +3,18 @@ import numpy as np
 
 def train_and_evaluate(model_name, in_model, in_train_loader, in_test_loader, learning_rate, num_epochs=15, device='cuda'):
   model = in_model.to(device)
+
+  # He initialization, good for ReLU
+  def init_weights(m):
+    if isinstance(m, torch.nn.Linear):
+      torch.nn.init.kaiming_uniform_(m.weight)
+      if m.bias is not None:
+        m.bias.data.fill_(0.0)
+    
+  # Apply He initialization to all applicable layers
+  model.apply(init_weights)
+
+
   criterion = torch.nn.CrossEntropyLoss()
   optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
@@ -28,6 +40,7 @@ def train_and_evaluate(model_name, in_model, in_train_loader, in_test_loader, le
 
     for i, (images, labels) in enumerate(in_train_loader):
       images = images.reshape(-1, 3*32*32).to(device)
+      images = images + 0.007 * torch.randn_like(images) # Adversarial Training
       labels = labels.to(device)
 
       # Forward pass
@@ -96,6 +109,21 @@ def train_and_evaluate(model_name, in_model, in_train_loader, in_test_loader, le
 
 def CNN_train_and_evaluate(model_name, in_model, in_train_loader, in_test_loader, learning_rate, num_epochs=15, device='cuda'):
   model = in_model.to(device)
+
+  # He initialization, good for ReLU
+  def init_weights(m):
+    if isinstance(m, torch.nn.Linear):
+      torch.nn.init.kaiming_uniform_(m.weight)
+      if m.bias is not None:
+        m.bias.data.fill_(0.0)
+      elif isinstance(m, torch.nn.Conv2d):
+        torch.nn.init.kaiming_uniform_(m.weight)
+        if m.bias is not None:
+          m.bias.data.fill_(0.0)
+    
+    # Apply He initialization to all applicable layers
+    model.apply(init_weights)
+
   criterion = torch.nn.CrossEntropyLoss()
   optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
@@ -120,6 +148,7 @@ def CNN_train_and_evaluate(model_name, in_model, in_train_loader, in_test_loader
 
     for i, (images, labels) in enumerate(in_train_loader):
       images, labels = images.to(device), labels.to(device)
+      images = images + 0.007 * torch.randn_like(images) # Adversarial Training
 
       # Forward + backward
       outputs = model(images)
