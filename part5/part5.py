@@ -1,7 +1,7 @@
 import torch
 import torchvision
 import torchvision.transforms as transforms
-from models import CNN_5
+from models import CNN_5, CNN_4
 from functions import CNN_train_and_evaluate,convert_to_serializable
 import json
 
@@ -11,7 +11,7 @@ print("You are using device:" , device)
 
 # Hyper-parameters 
 num_epochs = 20
-batch_size = 30
+batch_size = 50
 
 
 
@@ -31,7 +31,7 @@ full_dataset = torchvision.datasets.CIFAR10(root='./data',
                                             transform=transform)
 
 # Compute split sizes
-train_size = int(0.9 * len(full_dataset))  # 90% training
+train_size = int(0.9 * len(full_dataset))   # 90% training
 test_size = len(full_dataset) - train_size  # 10% testing
 
 # Split dataset
@@ -53,8 +53,9 @@ test_loader = torch.utils.data.DataLoader(test_dataset,
 # Instantiate the model
 #################################################################################
 
-model_CNN5 = CNN_5()
-model_CNN5_scheduled = CNN_5()
+model_CNN5 = CNN_4()
+model_CNN5_scheduled = CNN_4()
+
 
 
 
@@ -129,8 +130,8 @@ result_CNN5_sch_part1 = CNN_train_and_evaluate('cnn_5',
                                      train_loader, 
                                      test_loader, 
                                      0.1,         # Learning Rate
-                                     1,          # Number of Epochs
-                                     70,          # Target Validancy
+                                     30,          # Number of Epochs
+                                     65,          # Target Validancy
                                      True,        # Reinitialize Weights
                                      device)
 print("CNN_5 Training and evaluation finished with lr = 0.1, without achieved desired validancy")
@@ -141,7 +142,7 @@ result_CNN5_sch_part2 = CNN_train_and_evaluate('cnn_5',
                                      train_loader, 
                                      test_loader, 
                                      0.01,        # Learning Rate
-                                     1,          # Number of Epochs
+                                     30,          # Number of Epochs
                                      100,         # Target Validancy
                                      False,       # Reinitialize Weights
                                      device)

@@ -11,51 +11,40 @@ print("You are using device:" , device)
 
 # Hyper-parameters 
 num_epochs = 15
-batch_size = 30
+batch_size = 50
 learning_rate = 0.001
 
-# dataset has PILImage images of range [0, 1]. 
-# We transform them to Tensors of normalized range [-1, 1]
+#################################################################################
+# Transformations
+#################################################################################
+
 transform = transforms.Compose([
-  torchvision.transforms.ToTensor(),
-  torchvision.transforms.Normalize((0.4914, 0.4822, 0.4465), (0.247, 0.243, 0.261)),
-  ])
+  transforms.ToTensor(),
+  transforms.Normalize((0.4914, 0.4822, 0.4465), (0.247, 0.243, 0.261)),
+])
 
-# CIFAR10: 60000 32x32 color images in 10 classes, with 6000 images per class
-train_dataset = torchvision.datasets.CIFAR10(root='./data', 
-                                             train=True,
-                                             download=True, 
-                                             transform=transform)
-
-test_dataset = torchvision.datasets.CIFAR10(root='./data', 
-                                            train=False,
+# Load the dataset (assuming it's a custom dataset with 100,000 images)
+full_dataset = torchvision.datasets.CIFAR10(root='./data', 
+                                            train=True, 
                                             download=True, 
                                             transform=transform)
 
+# Compute split sizes
+train_size = int(0.9 * len(full_dataset))   # 90% training
+test_size = len(full_dataset) - train_size  # 10% testing
+
+# Split dataset
+train_dataset, test_dataset = torch.utils.data.random_split(full_dataset, [train_size, test_size])
+
+# Create DataLoaders
 train_loader = torch.utils.data.DataLoader(train_dataset, 
-                                           batch_size=batch_size,
+                                           batch_size=batch_size, 
                                            shuffle=True)
 
 test_loader = torch.utils.data.DataLoader(test_dataset, 
-                                          batch_size=batch_size,
+                                          batch_size=batch_size, 
                                           shuffle=False)
 
-classes = ('plane', 'car', 'bird', 'cat',
-           'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
-
-"""
-def imshow(imgs):
-    imgs = imgs / 2 + 0.5   # unnormalize
-    npimgs = imgs.numpy()
-    plt.imshow(np.transpose(npimgs, (1, 2, 0)))
-    plt.show()
-
-# one batch of random training images
-dataiter = iter(train_loader)
-images, labels = next(dataiter)
-img_grid = torchvision.utils.make_grid(images[0:25], nrow=5)
-imshow(img_grid)
-"""
 
 # Instantiate the model
 model_MLP1 = MLP_1() 

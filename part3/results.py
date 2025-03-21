@@ -20,6 +20,12 @@ with open('part3/results/result_CNN5.json', 'r') as file:
     results_CNN5 = json.load(file)
 
 visualizeWeights(np.array(results_MLP1['weights']), save_dir="part3/results")
+visualizeWeights(np.array(results_MLP2['weights']), save_dir="part3/results")
+visualizeWeights(np.array(results_CNN3['weights']), save_dir="part3/results")
+visualizeWeights(np.array(results_CNN4['weights']), save_dir="part3/results")
+visualizeWeights(np.array(results_CNN5['weights']), save_dir="part3/results")
+
+
 
 part3Plots([results_MLP1])
 part3Plots([results_MLP2])
