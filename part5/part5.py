@@ -53,8 +53,8 @@ test_loader = torch.utils.data.DataLoader(test_dataset,
 # Instantiate the model
 #################################################################################
 
-model_CNN5 = CNN_4()
-model_CNN5_scheduled = CNN_4()
+model_CNN5 = CNN_5()
+model_CNN5_scheduled = CNN_5()
 
 
 
@@ -118,8 +118,6 @@ with open('./part5/results/result_CNN5_diff_lr.json', 'w') as f:
 
 
 
-
-
 #################################################################################
 # Scheduling Learning First Try
 #################################################################################
@@ -143,10 +141,23 @@ result_CNN5_sch_part2 = CNN_train_and_evaluate('cnn_5',
                                      test_loader, 
                                      0.01,        # Learning Rate
                                      30,          # Number of Epochs
-                                     100,         # Target Validancy
+                                     70,         # Target Validancy
                                      False,       # Reinitialize Weights
                                      device)
-print("CNN_5 Training and evaluation finishedwith lr = 0.01")
+print("CNN_5 Training and evaluation finished with lr = 0.01, without achieved desired validancy")
+
+print("Tranining of CNN5 is starting with lr = 0.001")
+result_CNN5_sch_part2 = CNN_train_and_evaluate('cnn_5',
+                                     model_CNN5_scheduled, 
+                                     train_loader, 
+                                     test_loader, 
+                                     0.001,        # Learning Rate
+                                     30,          # Number of Epochs
+                                     100,         # Target Validancy
+                                     False,       # Reinitialize Weightss
+                                     device)
+print("CNN_5 Training and evaluation finishedwith lr = 0.001")
+
 
 results_model_CNN5_sch = []
 for result in [result_CNN5_sch_part1, result_CNN5_sch_part2]:
